@@ -1,0 +1,177 @@
+package com.assist7.remex.base.entity;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.assist7.remex.base.bconst.common.RemexResultConst;
+import com.assist7.remex.base.entity.web.ResultRequest;
+import com.assist7.remex.base.exception.service.RemexServiceException;
+import com.assist7.remex.base.exception.web.RemexRequestException;
+
+/**
+ * 结果集
+ * 
+ * @author Qiaoxin.Hong
+ *
+ * @param <T>
+ */
+public class Result<T> {
+	
+	/**
+	 * 结果代码，100~299：remex内定代码；其它为自定义异常，建议300~399：入参方面异常；400~599接口处理异常
+	 * <pre>
+	 * 100：成功
+	 * 101：操作异常
+	 * 102：入参异常
+	 * 103：接口处理失败
+	 * 104：控制层处理失败
+	 * 201：分页参数异常
+	 * 202：PVld参数验证异常
+	 * <pre>
+	 */
+	protected String code;
+	
+	/**
+	 * 结果信息
+	 */
+	protected String msg;
+	
+	/**
+	 * 结果数据
+	 */
+	protected T data;
+	
+	/**
+	 * 构建基础操作的结果，默认成功，即code=100
+	 */
+	public Result() {
+		super();
+		setCode(RemexResultConst.CODE_SUCCESS);
+	}
+	
+	/**
+	 * 操作结果，默认成功，即code=100
+	 * @param data 结果数据
+	 */
+	public Result(T data) {
+		super();
+		setCode(RemexResultConst.CODE_SUCCESS);
+		this.data = data;
+	}
+	
+	/**
+	 * 构建基础操作的结果
+	 * @param code 结果代码
+	 * @param msg 结果信息
+	 */
+	public Result(String code, String msg) {
+		super();
+		this.code = code;
+		this.msg = msg;
+	}
+	
+	/**
+	 * 操作结果
+	 * @param code 结果代码
+	 * @param data 结果数据
+	 * @param msg 结果信息
+	 */
+	public Result(String code, T data, String msg) {
+		super();
+		this.code = code;
+		this.data = data;
+		this.msg = msg;
+	}
+	
+	/**
+	 * 是否操作成功
+	 * @return
+	 */
+	@JSONField(serialize = false)
+	public boolean isSuccess() {
+		return RemexResultConst.CODE_SUCCESS.equals(this.code);
+	}
+	
+	/**
+	 * 是否操作失败
+	 * @return
+	 */
+	@JSONField(serialize = false)
+	public boolean isFailed() {
+		return !isSuccess();
+	}
+	
+	/**
+	 * 在请求接口的地方获取结果数据时使用，在操作失败（即code != 100）时，会抛出RemexRequestException异常，可用于类似请求的集中处理等
+	 * @see com.qylyx.remex.base.web.exception.RemexRequestException
+	 * @return
+	 */
+	@JSONField(serialize = false)
+	public T getDataWeb() {
+		if (isFailed())
+			throw new RemexRequestException(code, RemexResultConst.MSG_FAIL, msg);
+		return data;
+	}
+	
+	/**
+	 * 在请求接口的地方获取结果数据时使用，直接创建ResultRequest，在操作失败（即code != 100）时，会抛出RemexRequestException异常，可用于类似请求的集中处理等
+	 * @see com.qylyx.remex.base.web.exception.RemexRequestException
+	 * @see com.qylyx.remex.base.entity.ResultRequest
+	 * @return
+	 */
+	@JSONField(serialize = false)
+	public ResultRequest getWebResult() {
+		return new ResultRequest(getDataWeb());
+	}
+	
+	/**
+	 * 在接口请求其它接口的地方获取结果数据时使用，在操作失败（即code != 100）时，会抛出RemexServiceException异常
+	 * @see com.qylyx.remex.base.service.exception.RemexServiceException
+	 * @return
+	 */
+	@JSONField(serialize = false)
+	public T getDataService() {
+		if (isFailed())
+			throw new RemexServiceException(code, msg);
+		return data;
+	}
+	
+	
+	/**
+	 * 可打印的拼接好的日志信息
+	 * @return
+	 */
+	@JSONField(serialize = false)
+	public String getLog() {
+		return " [code=" + code + ", msg=" + msg + "]";
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public T getData() {
+		return data;
+	}
+
+	public void setData(T data) {
+		this.data = data;
+	}
+
+	@Override
+	public String toString() {
+		return "Result [code=" + code + ", msg=" + msg + ", data=" + data + "]";
+	}
+	
+	
+}
