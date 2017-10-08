@@ -8,7 +8,26 @@
   <modules>
   	<module>remex-root</module>
     <module>remex-base</module>
+    <module>remex-framework</module>
   </modules>
+  
+  <distributionManagement>
+  	<snapshotRepository>
+  		<id>qylyx-snapshot</id>
+  		<name>qylyx-snapshot</name>
+  		<url>http://120.77.221.152:8081/nexus/content/repositories/snapshots</url>
+  	</snapshotRepository>
+  	<repository>
+  		<id>qylyx-release</id>
+  		<name>qylyx-release</name>
+  		<url>http://120.77.221.152:8081/nexus/content/repositories/releases</url>
+  	</repository>
+  </distributionManagement>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <july.version>0.0.1-SNAPSHOT</july.version>
+  </properties>
   
   <dependencyManagement>
   	<dependencies>
@@ -16,6 +35,17 @@
   			<groupId>com.assist7.remex</groupId>
   			<artifactId>remex-base</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.assist7.remex</groupId>
+  			<artifactId>remex-framework</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		
+  		<dependency>
+  			<groupId>com.assist7.july</groupId>
+  			<artifactId>july-utils</artifactId>
+  			<version>${july.version}</version>
   		</dependency>
   		
   		<dependency>
@@ -46,7 +76,7 @@
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-aop</artifactId>
-		    <version>1.5.2.RELEASE</version>
+		    <version>1.4.2.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>

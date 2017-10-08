@@ -13,5 +13,9 @@
 		<groupId>com.assist7.remex</groupId>
 		<artifactId>remex-base</artifactId>
 	</dependency>
+	<dependency>
+		<groupId>com.assist7.remex</groupId>
+		<artifactId>remex-framework</artifactId>
+	</dependency>
   </dependencies>
 </project>
