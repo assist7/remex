@@ -27,6 +27,14 @@ public class RemexBaseService<E> implements IRemexBaseService<E> {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
 	/**
+	 * 创建一个默认的成功的结果集对象
+	 * @return
+	 */
+	protected <T> Result<T> successResult() {
+		return new Result<T>();
+	}
+	
+	/**
 	 * 以list创建一个结果集对象
 	 * @param list
 	 * @return
